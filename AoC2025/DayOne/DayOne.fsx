@@ -6,11 +6,10 @@ type Direction =
     | Left
     | Right
     
-let parse (line: string) =
-                               match line[0] with
-                               | 'L' -> Left, (int line[1..])
-                               | 'R' -> Right, (int line[1..])
-                               | _ -> failwith "Invalid input"
+let parse (line: string) = match line[0] with
+                                       | 'L' -> Left, (int line[1..])
+                                       | 'R' -> Right, (int line[1..])
+                                       | _ -> failwith "Invalid input"
                                
 let wrap value = ((value % 100) + 100 ) % 100
 
@@ -28,19 +27,19 @@ let moveRight amount dial =
     newPosition, zeroPasses
                                
 let result = File.ReadLines "input.txt"
-                    |> Seq.toList
-                    |> List.map parse
-                    |> List.map (fun (direction, amount) -> match direction with
-                                                            | Left -> moveLeft amount
-                                                            | Right -> moveRight amount)
-                    |> List.scan (fun (newPosition, _) moveFunc -> moveFunc newPosition) (50, 0)
+                        |> Seq.toList
+                        |> List.map parse
+                        |> List.map (fun (direction, amount) -> match direction with
+                                                                | Left -> moveLeft amount
+                                                                | Right -> moveRight amount)
+                        |> List.scan (fun (newPosition, _) move -> move newPosition) (50, 0)
 
 let partOneAnswer = result
-                               |> List.filter (fun (position, _) -> position = 0)
-                               |> List.length
+                        |> List.filter (fun (position, _) -> position = 0)
+                        |> List.length
                  
 let partTwoAnswer = result
-                    |> List.sumBy snd
+                        |> List.sumBy snd
                  
 printfn "Password 1 is: %d" partOneAnswer
 printfn "Password is: %d" partTwoAnswer
